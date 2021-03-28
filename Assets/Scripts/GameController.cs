@@ -12,12 +12,15 @@ public class GameController : MonoBehaviour
     public float Gold;
 
     public int nextStop;
+
+    public GameObject stopUI;
     // Start is called before the first frame update
     void Start()
     {
         Gold = 20;
         goldText.text = "$" + Gold;
-        nextStop = Random.Range(25, 50);
+        nextStop = Random.Range(5, 15);
+        stopUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -26,6 +29,7 @@ public class GameController : MonoBehaviour
         if (Distance >= nextStop) {
             FindObjectOfType<Train>().isMoving = false;
             nextStop += Random.Range(25, 50);
+            stopUI.SetActive(true);
         }
     }
 
