@@ -7,6 +7,7 @@ public class TrainCar : MonoBehaviour
     public CarType type;
     public float maxCapacity;
     public float currentCapacity;
+    public float quality;
 
     public float buyPrice;
     public float sellPrice;

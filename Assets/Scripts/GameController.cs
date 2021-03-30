@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Gold = 20;
+        Gold = 600;
         goldText.text = "$" + Gold;
         nextStop = Random.Range(5, 15);
         stopUI.SetActive(false);
@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour
             FindObjectOfType<Train>().isMoving = false;
             nextStop += Random.Range(25, 50);
             stopUI.SetActive(true);
+            stopUI.GetComponent<Stop>().populateBuy();
         }
     }
 

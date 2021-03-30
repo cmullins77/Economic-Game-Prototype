@@ -33,6 +33,11 @@ public class Train : MonoBehaviour
 
     }
 
+    public void updateCoal(int num) {
+         amountCoal+= num;
+         coalText.text = amountCoal + " Coal";
+    }
+
     public void useCoal() {
         if (amountCoal == 0) {
             isMoving = false;
@@ -84,7 +89,7 @@ public class Train : MonoBehaviour
     }
 
     public void swapCars(int i, int j) {
-        if (cars.Count - 1 > i && cars.Count - 1 > j) {
+        if (cars.Count - 1 >= i && cars.Count - 1 >= j) {
             TrainCar car1= cars[i];
             TrainCar car2 = cars[j];
             Vector3 spot1 = car1.transform.position;
