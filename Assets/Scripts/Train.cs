@@ -52,6 +52,7 @@ public class Train : MonoBehaviour
         difficulty = difficulty + .1f;
         difficulty = difficulty + (trainWeight / 200f);
         difficulty = difficulty / 2f;
+        Debug.Log("Difficulty " + difficulty);
         currentSteam -= difficulty;
         if (currentSteam <= 0) {
             useCoal();
@@ -98,6 +99,12 @@ public class Train : MonoBehaviour
             car2.transform.position = spot1;
             cars[i] = car2;
             cars[j] = car1;
+        }
+    }
+
+    public void checkJobs() {
+        foreach (TrainCar car in cars) {
+            car.checkJobs();
         }
     }
 }

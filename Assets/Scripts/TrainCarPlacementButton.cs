@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Passenger : MonoBehaviour
+public class TrainCarPlacementButton : MonoBehaviour
 {
+    public int indexOfCar;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +15,9 @@ public class Passenger : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void selectCar() {
+        FindObjectOfType<Stop>().selectPlacementCar(this);
     }
 }

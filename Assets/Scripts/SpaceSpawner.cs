@@ -10,17 +10,20 @@ public class SpaceSpawner : MonoBehaviour
     public GameObject currentSpace;
 
     public List<Space> spaces;
+
+    float difficulty;
     // Start is called before the first frame update
     void Start()
     {
-        spawnSpace(0.1f);
+        spawnSpace(0f);
     }
 
     // Update is called once per frame
     void Update()
     {
+        difficulty = FindObjectOfType<GameController>().Distance / 500f;
         if (currentSpace.transform.position.x > transform.position.x + 0.95f) {
-            spawnSpace(0.1f);
+            spawnSpace(difficulty);
         }
     }
 
@@ -30,12 +33,14 @@ public class SpaceSpawner : MonoBehaviour
         GameObject newSpace = Instantiate(space, transform);
         newSpace.transform.position = transform.position;
         newSpace.GetComponent<SpriteRenderer>().color = spaceColor;
+        newSpace.GetComponent<Space>().difficulty = difficulty;
         currentSpace = newSpace;
 
         FindObjectOfType<GameController>().addDistance();
         Space trainSpace = spaces[0];
         spaces.RemoveAt(0);
         spaces.Add(newSpace.GetComponent<Space>());
+        Debug.Log("Current Difficulty: " + trainSpace.difficulty);
         FindObjectOfType<Train>().travelSpace(trainSpace.difficulty);
     }
 }

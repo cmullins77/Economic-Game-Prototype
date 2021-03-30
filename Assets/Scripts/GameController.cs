@@ -11,7 +11,9 @@ public class GameController : MonoBehaviour
     public Text goldText;
     public float Gold;
 
+
     public int nextStop;
+    public int lengthCurrent;
 
     public GameObject stopUI;
     // Start is called before the first frame update
@@ -20,6 +22,7 @@ public class GameController : MonoBehaviour
         Gold = 600;
         goldText.text = "$" + Gold;
         nextStop = Random.Range(5, 15);
+        lengthCurrent = nextStop;
         stopUI.SetActive(false);
     }
 
@@ -28,10 +31,18 @@ public class GameController : MonoBehaviour
     {
         if (Distance >= nextStop) {
             FindObjectOfType<Train>().isMoving = false;
-            nextStop += Random.Range(25, 50);
+            lengthCurrent = Random.Range(25, 50);
+            nextStop += lengthCurrent;
+            FindObjectOfType<Train>().checkJobs();
             stopUI.SetActive(true);
             stopUI.GetComponent<Stop>().populateBuy();
+            stopUI.GetComponent<Stop>().generateJobs();
         }
+    }
+
+    public void continueJourney() {
+        FindObjectOfType<Train>().isMoving = true;
+        stopUI.SetActive(false);
     }
 
     public void addDistance() {

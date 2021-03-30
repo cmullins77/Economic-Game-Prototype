@@ -26,6 +26,25 @@ public class Stop : MonoBehaviour
     public Image sellItemImage;
     public Text sellInfoText;
 
+    public List<Job> jobs;
+    public List<JobButton> jobButtons;
+    public List<GameObject> jobPrefabs;
+    public GameObject jobPage;
+    public GameObject jobButtonPrefab;
+    public Text jobInfoText;
+    public Image jobInfoImage;
+    public GameObject jobsUI;
+    public GameObject jobsInfoUI;
+    public GameObject jobsPlacementUI;
+    public JobButton currentJob;
+    public GameObject trainCarPlacementButtonPrefab;
+    public GameObject trainCarsPlacementPage;
+    List<TrainCarPlacementButton> trainCarPlacementButtons;
+    int currentPlacementIndex;
+    public GameObject placeButton;
+    public Text carPlacementInfo;
+    public Text jobPlacementInfo;
+
     public GameObject trainCarButtonPrefab;
     public GameObject trainCarsPage;
     List<TrainCarButton> trainCarButtons;
@@ -83,6 +102,127 @@ public class Stop : MonoBehaviour
        
     }
 
+    public void generateJobs() {
+        jobs = new List<Job>();
+        for (int i = 0; i < Random.Range(5,15); i++) {
+            GameObject jobObj = Instantiate(jobPrefabs[Random.Range(0, jobPrefabs.Count)]);
+            jobObj.transform.position = new Vector3(-1000f, -1000f, 0);
+            Job job = jobObj.GetComponent<Job>();
+            Debug.Log(job);
+            int quant = Random.Range(1, 11);
+            int distance = -1;
+            int stops = -1;
+            int qual = Random.Range(0, 6);
+            job.minQuality = qual;
+            job.quantity = quant;
+            if (Random.Range(0,2) == 0) {
+                distance = Random.Range(20, 200);
+                job.distance = distance;
+            } else {
+                stops = Random.Range(1, 4);
+                job.stops = stops;
+            }
+            float distanceReward = stops == -1 ? distance : stops * 100;
+            float reward = (distanceReward + 30*(qual + quant) + (int)job.type*2)/ 20f;
+            job.reward = (int) reward;
+
+            job.sprite = jobObj.GetComponent<SpriteRenderer>().sprite;
+            Debug.Log(job.type + " " + quant + " " + qual + " " + distance + " " + stops + " " + reward);
+
+            jobs.Add(job);
+        }
+    }
+
+    public void populateJobs() {
+        float currentX = -400f;
+        float currentY = 310f;
+        foreach (Transform child in jobPage.transform) {
+            GameObject.Destroy(child.gameObject);
+        }
+        jobButtons = new List<JobButton>();
+        for (int i = 0; i < jobs.Count; i++) {
+            Job job = jobs[i];
+            Debug.Log("job " + job);
+            GameObject newButton = Instantiate(jobButtonPrefab, jobPage.transform);
+            newButton.GetComponent<Image>().sprite = job.sprite;
+            newButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentX, currentY);
+            newButton.GetComponent<JobButton>().sprite = job.sprite;
+            newButton.GetComponent<JobButton>().job = job;
+            newButton.GetComponent<JobButton>().index = i;
+            jobButtons.Add(newButton.GetComponent<JobButton>());
+
+            currentX += 200f;
+            if (currentX > 400f) {
+                currentY -= 200f;
+                currentX = -400f;
+            }
+        }
+
+    }
+    public void showJobInfo(JobButton jobB) {
+        Debug.Log("Distance: " + jobB.job.distance + " Stops: " + jobB.job.stops);
+        string info = "Name: " + jobB.job.type + "\nQuantity: " + jobB.job.quantity + "\nMinimum Quality: " + jobB.job.minQuality;
+        info = info + (jobB.job.stops != -1 ? "\nStops: " + jobB.job.stops : "\nDistance: " + jobB.job.distance);
+        info = info + "\nReward: $" + jobB.job.reward;
+        jobInfoText.text = info;
+        jobInfoImage.sprite = jobB.sprite;
+        jobsUI.SetActive(false);
+        jobsInfoUI.SetActive(true);
+        currentJob = jobB;
+    }
+    
+    public void acceptJob() {
+        populateTrainCarJobPlacement();
+        jobPlacementInfo.text = "Type: " + currentJob.job.type + "\nQuantity: " + currentJob.job.quantity + "\nMin Quality: " + currentJob.job.minQuality;
+    }
+
+    public void selectPlacementCar(TrainCarPlacementButton button) {
+        currentPlacementIndex = button.indexOfCar;
+        TrainCar car = FindObjectOfType<Train>().cars[currentPlacementIndex];
+        carPlacementInfo.text = "Type: " + car.type + "\nCurrent Capacity: " + (car.maxCapacity - car.currentCapacity) + "\nQuality: " + car.quality;
+        placeButton.SetActive(true);
+        carPlacementInfo.gameObject.SetActive(true);
+    }
+
+    public void placeJob() {
+        Debug.Log(currentPlacementIndex + " " + currentJob + " " + currentJob.job);
+        bool isPlaced = FindObjectOfType<Train>().cars[currentPlacementIndex].addJob(currentJob.job);
+        if (isPlaced) {
+            jobs.RemoveAt(currentJob.index);
+            populateJobs();
+            jobsUI.SetActive(true);
+            jobsPlacementUI.SetActive(false);
+        }
+    }
+
+    void populateTrainCarJobPlacement() {
+        Debug.Log("Populate Train Cars for Job Placement");
+        Train train = FindObjectOfType<Train>();
+        List<TrainCar> cars = train.cars;
+        foreach (Transform child in trainCarsPlacementPage.transform) {
+            GameObject.Destroy(child.gameObject);
+        }
+        trainCarPlacementButtons = new List<TrainCarPlacementButton>();
+        float currentX = -400f;
+        float currentY = 310f;
+        for (int i = 0; i < cars.Count; i++) {
+            GameObject newButton = Instantiate(trainCarPlacementButtonPrefab, trainCarsPlacementPage.transform);
+            newButton.GetComponent<Image>().sprite = cars[i].GetComponent<SpriteRenderer>().sprite;
+            newButton.GetComponent<TrainCarPlacementButton>().indexOfCar = i;
+            newButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentX, currentY);
+            trainCarPlacementButtons.Add(newButton.GetComponent<TrainCarPlacementButton>());
+
+            currentX += 200f;
+            if (currentX > 400f) {
+                currentY -= 200f;
+                currentX = -400f;
+            }
+        }
+        currentPlacementIndex = -1;
+        placeButton.SetActive(false);
+        carPlacementInfo.gameObject.SetActive(false);
+    }
+
     public void populateBuy() {
         int options = buyCarPrefabs.Count + resourceTypePrefabs.Count;
         int numAvailable = Random.Range(2, 13);
@@ -103,7 +243,8 @@ public class Stop : MonoBehaviour
             int Quantity = 0;
             bool isTrainCar = false;
             if (type < buyCarPrefabs.Count) {
-                prefab = buyCarPrefabs[type];
+                prefab = Instantiate(buyCarPrefabs[type]);
+                prefab.transform.position = new Vector3(-1000f, -1000f, 0);
                 Quantity = Random.Range(1, 3);
                 int Quality = Random.Range(1, 11);
                 int maxCapacity = Random.Range(1, 21); ;
@@ -117,7 +258,8 @@ public class Stop : MonoBehaviour
                 isTrainCar = true;
                 info = "\nPrice: $" + price + "\nQuality: " + Quality + "\nMax Capacity: " + maxCapacity + "\nWeight: " + weight;
             } else {
-                prefab = resourceTypePrefabs[type - buyCarPrefabs.Count];
+                prefab = Instantiate(resourceTypePrefabs[type - buyCarPrefabs.Count]);
+                prefab.transform.position = new Vector3(-1000f, -1000f, 0);
                 Quantity = Random.Range(5, 36);
                 price = Random.Range(2, 21) + (int)prefab.GetComponent<Resource>().type * Random.Range(1, 5);
                 info = "\nPrice: $" + price;
@@ -147,7 +289,7 @@ public class Stop : MonoBehaviour
 
         }
     }
-
+    
     public void populateSell() {
         float currentX = -400f;
         float currentY = 310f;
@@ -259,7 +401,7 @@ public class Stop : MonoBehaviour
         }
         carInfo.gameObject.SetActive(true);
         TrainCar c = FindObjectOfType<Train>().cars[i];
-        carInfo.text = "Max Capacity: " + c.maxCapacity + ", Current Capacity: " + c.currentCapacity + ", Quality: " + c.quality;
+        carInfo.text = "Max Capacity: " + c.maxCapacity + ", Current Quantity: " + c.currentCapacity + ", Quality: " + c.quality;
     }
 
     public void swapCars() {
@@ -269,6 +411,6 @@ public class Stop : MonoBehaviour
     }
 
     public void continueJourney() {
-
+        FindObjectOfType<GameController>().continueJourney();
     }
 }
