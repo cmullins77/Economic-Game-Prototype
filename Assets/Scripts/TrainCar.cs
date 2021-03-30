@@ -15,6 +15,8 @@ public class TrainCar : MonoBehaviour
     public float weight;
 
     public List<Job> jobs;
+
+    public Sprite sprite;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,11 +49,14 @@ public class TrainCar : MonoBehaviour
     }
 
     public void checkJobs() {
-        foreach (Job job in jobs) {
+        Debug.Log("Count: " + jobs.Count);
+        for (int i = 0; i < jobs.Count; i++) {
+            Job job = jobs[i];
             if (job.stops != -1) {
                 job.currentCount++;
                 if (job.stops == job.currentCount) {
                     FindObjectOfType<GameController>().updateGold(job.reward);
+                    FindObjectOfType<GameController>().updateRep(job.quantity/2);
                     jobs.Remove(job);
                     currentCapacity -= job.quantity;
                 }
@@ -59,6 +64,7 @@ public class TrainCar : MonoBehaviour
                 job.currentCount += FindObjectOfType<GameController>().lengthCurrent;
                 if (job.distance <= job.currentCount) {
                     FindObjectOfType<GameController>().updateGold(job.reward);
+                    FindObjectOfType<GameController>().updateRep(job.quantity/2);
                     jobs.Remove(job);
                     currentCapacity -= job.quantity;
                 }

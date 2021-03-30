@@ -15,6 +15,8 @@ public class Train : MonoBehaviour
 
     public List<TrainCar> cars;
     public List<GameObject> startingCars;
+
+    public GameObject trainCarPrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,8 +24,7 @@ public class Train : MonoBehaviour
         coalText.text = amountCoal + " Coal";
         isMoving = true;
         foreach (GameObject car in startingCars) {
-            GameObject obj = Instantiate(car, transform);
-            addCar(obj.GetComponent<TrainCar>());
+            addCar(car.GetComponent<TrainCar>());
         }
     }
 
@@ -41,6 +42,13 @@ public class Train : MonoBehaviour
     public void useCoal() {
         if (amountCoal == 0) {
             isMoving = false;
+            Train train = FindObjectOfType<Train>();
+            if (train.cars.Count > 0) {
+                int numJobs = (int)train.cars[train.cars.Count - 1].currentCapacity;
+                FindObjectOfType<GameController>().updateRep((numJobs + 5)*-1);
+                train.detachLastCar();
+            }
+            FindObjectOfType<GameController>().showEndButton();
         } else {
             amountCoal--;
             currentSteam++;
@@ -60,10 +68,20 @@ public class Train : MonoBehaviour
     }
 
     public void addCar(TrainCar newCar) {
+        GameObject newCarObj = Instantiate(trainCarPrefab, transform);
+        newCarObj.GetComponent<SpriteRenderer>().sprite = newCar.sprite;
+        newCarObj.AddComponent(typeof(TrainCar));
+        newCarObj.GetComponent<TrainCar>().type = newCar.type;
+        newCarObj.GetComponent<TrainCar>().maxCapacity = newCar.maxCapacity;
+        newCarObj.GetComponent<TrainCar>().currentCapacity = newCar.currentCapacity;
+        newCarObj.GetComponent<TrainCar>().quality = newCar.quality;
+        newCarObj.GetComponent<TrainCar>().buyPrice = newCar.buyPrice;
+        newCarObj.GetComponent<TrainCar>().sellPrice = newCar.sellPrice;
+        newCarObj.GetComponent<TrainCar>().weight = newCar.weight;
         if (cars.Count > 0) {
-            newCar.transform.position = cars[cars.Count - 1].transform.position + new Vector3(1.68f, 0, 0);
+            newCarObj.transform.position = cars[cars.Count - 1].transform.position + new Vector3(1.68f, 0, 0);
         }
-        cars.Add(newCar);
+        cars.Add(newCarObj.GetComponent<TrainCar>());
         trainWeight += newCar.weight;
     }
 

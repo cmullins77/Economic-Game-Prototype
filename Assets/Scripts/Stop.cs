@@ -104,7 +104,7 @@ public class Stop : MonoBehaviour
 
     public void generateJobs() {
         jobs = new List<Job>();
-        for (int i = 0; i < Random.Range(5,15); i++) {
+        for (int i = 0; i < Random.Range(2,5 + (FindObjectOfType<GameController>().Reputation/5)); i++) {
             GameObject jobObj = Instantiate(jobPrefabs[Random.Range(0, jobPrefabs.Count)]);
             jobObj.transform.position = new Vector3(-1000f, -1000f, 0);
             Job job = jobObj.GetComponent<Job>();
@@ -134,8 +134,8 @@ public class Stop : MonoBehaviour
     }
 
     public void populateJobs() {
-        float currentX = -400f;
-        float currentY = 310f;
+        float currentX = -240f;
+        float currentY = 130f;
         foreach (Transform child in jobPage.transform) {
             GameObject.Destroy(child.gameObject);
         }
@@ -151,10 +151,10 @@ public class Stop : MonoBehaviour
             newButton.GetComponent<JobButton>().index = i;
             jobButtons.Add(newButton.GetComponent<JobButton>());
 
-            currentX += 200f;
-            if (currentX > 400f) {
-                currentY -= 200f;
-                currentX = -400f;
+            currentX += 120f;
+            if (currentX > 240f) {
+                currentY -= 100f;
+                currentX = -240f;
             }
         }
 
@@ -203,8 +203,8 @@ public class Stop : MonoBehaviour
             GameObject.Destroy(child.gameObject);
         }
         trainCarPlacementButtons = new List<TrainCarPlacementButton>();
-        float currentX = -400f;
-        float currentY = 310f;
+        float currentX = -240;
+        float currentY = 130f;
         for (int i = 0; i < cars.Count; i++) {
             GameObject newButton = Instantiate(trainCarPlacementButtonPrefab, trainCarsPlacementPage.transform);
             newButton.GetComponent<Image>().sprite = cars[i].GetComponent<SpriteRenderer>().sprite;
@@ -212,10 +212,10 @@ public class Stop : MonoBehaviour
             newButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentX, currentY);
             trainCarPlacementButtons.Add(newButton.GetComponent<TrainCarPlacementButton>());
 
-            currentX += 200f;
-            if (currentX > 400f) {
-                currentY -= 200f;
-                currentX = -400f;
+            currentX += 120f;
+            if (currentX > 240f) {
+                currentY -= 100f;
+                currentX = -240f;
             }
         }
         currentPlacementIndex = -1;
@@ -225,10 +225,10 @@ public class Stop : MonoBehaviour
 
     public void populateBuy() {
         int options = buyCarPrefabs.Count + resourceTypePrefabs.Count;
-        int numAvailable = Random.Range(2, 13);
+        int numAvailable = Random.Range(2, 3 + (FindObjectOfType<GameController>().Reputation/5));
 
-        float currentX = -400f;
-        float currentY = 310f;
+        float currentX = -240f;
+        float currentY = 130f;
 
         foreach (Transform child in buyPage.transform) {
             GameObject.Destroy(child.gameObject);
@@ -281,18 +281,18 @@ public class Stop : MonoBehaviour
             newButton.GetComponent<BuyItem>().prefab = prefab;
             buyItems.Add(newButton.GetComponent<BuyItem>());
 
-            currentX += 200f;
-            if (currentX > 400f) {
-                currentY -= 200f;
-                currentX = -400f;
+            currentX += 120f;
+            if (currentX > 240f) {
+                currentY -= 100f;
+                currentX = -240;
             }
 
         }
     }
     
     public void populateSell() {
-        float currentX = -400f;
-        float currentY = 310f;
+        float currentX = -240f;
+        float currentY = 130f;
 
         foreach (Transform child in sellPage.transform) {
             GameObject.Destroy(child.gameObject);
@@ -322,10 +322,10 @@ public class Stop : MonoBehaviour
             newButton.GetComponent<SellItem>().prefab = car;
             sellItems.Add(newButton.GetComponent<SellItem>());
 
-            currentX += 200f;
-            if (currentX > 400f) {
-                currentY -= 200f;
-                currentX = -400f;
+            currentX += 120f;
+            if (currentX > 240f) {
+                currentY -= 100f;
+                currentX = -240f;
             }
         }
 
@@ -370,8 +370,8 @@ public class Stop : MonoBehaviour
             GameObject.Destroy(child.gameObject);
         }
         trainCarButtons = new List<TrainCarButton>();
-        float currentX = -400f;
-        float currentY = 310f;
+        float currentX = -240f;
+        float currentY = 130f;
         for (int i = 0; i < cars.Count; i++) {
             GameObject newButton = Instantiate(trainCarButtonPrefab, trainCarsPage.transform);
             newButton.GetComponent<Image>().sprite = cars[i].GetComponent<SpriteRenderer>().sprite;
@@ -379,10 +379,10 @@ public class Stop : MonoBehaviour
             newButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentX, currentY);
             trainCarButtons.Add(newButton.GetComponent<TrainCarButton>());
 
-            currentX += 200f;
-            if (currentX > 400f) {
-                currentY -= 200f;
-                currentX = -400f;
+            currentX += 120f;
+            if (currentX > 240f) {
+                currentY -= 100f;
+                currentX = -240f;
             }
         }
         carSwapIndex1 = -1;

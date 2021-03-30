@@ -103,3 +103,4 @@ MonoBehaviour:
   sellPrice: 100
   weight: 1
   jobs: []
+  sprite: {fileID: 21300000, guid: 5b56b5bb9784b6e4eb04fc283c5e6262, type: 3}
