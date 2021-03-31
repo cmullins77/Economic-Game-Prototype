@@ -38,6 +38,7 @@ public class GameController : MonoBehaviour
     {
         if (Distance >= nextStop) {
             FindObjectOfType<Train>().isMoving = false;
+            FindObjectOfType<Train>().smoke.Pause();
             lengthCurrent = Random.Range(25, 50);
             nextStop += lengthCurrent;
             FindObjectOfType<Train>().checkJobs();
@@ -88,6 +89,7 @@ public class GameController : MonoBehaviour
 
     public void continueJourney() {
         FindObjectOfType<Train>().isMoving = true;
+        FindObjectOfType<Train>().smoke.Play();
         stopUI.SetActive(false);
     }
 

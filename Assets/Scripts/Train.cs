@@ -16,10 +16,13 @@ public class Train : MonoBehaviour
     public List<TrainCar> cars;
     public List<GameObject> startingCars;
 
+    public ParticleSystem smoke;
+
     public GameObject trainCarPrefab;
     // Start is called before the first frame update
     void Start()
     {
+        smoke.Play();
         cars = new List<TrainCar>();
         coalText.text = amountCoal + " Coal";
         isMoving = true;
@@ -41,6 +44,7 @@ public class Train : MonoBehaviour
 
     public void useCoal() {
         if (amountCoal == 0) {
+            smoke.Stop();
             isMoving = false;
             Train train = FindObjectOfType<Train>();
             if (train.cars.Count > 0) {
@@ -57,9 +61,8 @@ public class Train : MonoBehaviour
     }
 
     public void travelSpace(float difficulty) {
-        difficulty = difficulty + .1f;
         difficulty = difficulty + (trainWeight / 200f);
-        difficulty = difficulty / 2f;
+        difficulty = difficulty / 4f;
         Debug.Log("Difficulty " + difficulty);
         currentSteam -= difficulty;
         if (currentSteam <= 0) {
