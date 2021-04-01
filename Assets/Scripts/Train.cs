@@ -24,7 +24,7 @@ public class Train : MonoBehaviour
     {
         smoke.Play();
         cars = new List<TrainCar>();
-        coalText.text = amountCoal + " Coal";
+        coalText.text = amountCoal + "";
         isMoving = true;
         foreach (GameObject car in startingCars) {
             addCar(car.GetComponent<TrainCar>());
@@ -39,7 +39,7 @@ public class Train : MonoBehaviour
 
     public void updateCoal(int num) {
          amountCoal+= num;
-         coalText.text = amountCoal + " Coal";
+         coalText.text = amountCoal + "";
     }
 
     public void useCoal() {
@@ -56,7 +56,7 @@ public class Train : MonoBehaviour
         } else {
             amountCoal--;
             currentSteam++;
-            coalText.text = amountCoal + " Coal";
+            coalText.text = amountCoal +"";
         }
     }
 
