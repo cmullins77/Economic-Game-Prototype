@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  maxCapacity: 5
+  maxCapacity: 10
   currentCapacity: 0
   quality: 2
   buyPrice: 200

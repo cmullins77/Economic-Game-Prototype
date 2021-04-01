@@ -6,10 +6,12 @@ public class Space : MonoBehaviour
 {
 
     public float difficulty;
+    public GameObject coalButton;
+    public Canvas canvas;
     // Start is called before the first frame update
     void Start()
     {
-
+        canvas.worldCamera = FindObjectOfType<Camera>();
     }
 
     // Update is called once per frame
@@ -21,5 +23,10 @@ public class Space : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+    }
+
+    public void pressCoal() {
+        coalButton.SetActive(false);
+        FindObjectOfType<Train>().updateCoal(Random.Range(1,4));
     }
 }

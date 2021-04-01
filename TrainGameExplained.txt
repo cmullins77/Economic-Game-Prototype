@@ -1,0 +1,13 @@
+There are 2 sections of the game: movement between stations and at the station.
+
+Currently, while the train is moving it will automatically add coal to the engine to produce steam.
+Keep on the lookout for resources (just coal in this prototype) along the way.
+Click on them to pick them up!
+
+At the station you can buy and sell train cars and resources, rearrange the train, and pickup new jobs.
+To edit the train you'll have to select 2 train cars and then hit the swap button to swap their positions.
+In future train cars could get certain bonuses from being next to train cars of a particular type.
+For example dining cars might provide a quality bonus to a passenger car.
+For now, the last car is more vulnerable since if you run out of fuel you may have to sacrifice it.
+Running out of fuel and sacrficing cars that have passengers/livestock/freight will lower your reputation.
+Higher reputation means more available jobs and cars to buy.

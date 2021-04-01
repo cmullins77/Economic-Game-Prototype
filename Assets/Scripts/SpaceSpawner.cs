@@ -38,6 +38,9 @@ public class SpaceSpawner : MonoBehaviour
 
         FindObjectOfType<GameController>().addDistance();
         Space trainSpace = spaces[0];
+        if (Random.Range(0, 20 - (int)difficulty*10) == 0) {
+            newSpace.GetComponent<Space>().coalButton.SetActive(true);
+        }
         spaces.RemoveAt(0);
         spaces.Add(newSpace.GetComponent<Space>());
         Debug.Log("Current Difficulty: " + trainSpace.difficulty);

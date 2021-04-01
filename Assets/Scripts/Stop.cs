@@ -123,7 +123,7 @@ public class Stop : MonoBehaviour
                 job.stops = stops;
             }
             float distanceReward = stops == -1 ? distance : stops * 100;
-            float reward = (distanceReward + 30*(qual + quant) + (int)job.type*2)/ 20f;
+            float reward = (distanceReward + 30*(qual + quant) + (int)job.type*2)/ 5f;
             job.reward = (int) reward;
 
             job.sprite = jobObj.GetComponent<SpriteRenderer>().sprite;

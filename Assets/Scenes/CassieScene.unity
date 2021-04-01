@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 617d9be015db68348a623b01ea51a8c5, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -2193,7 +2193,7 @@ Camera:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.3915094, g: 0.5803048, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -5449,8 +5449,6 @@ MonoBehaviour:
   cars: []
   startingCars:
   - {fileID: 7494284725195535657, guid: 009c9b7eb3fefdc4992533292fc6db35, type: 3}
-  - {fileID: 4631078268156982084, guid: ea2161b0b5ee2a94590d756385413253, type: 3}
-  - {fileID: 3140418891158150442, guid: 489bdbb66c4cf784f8bdf1cf53fa24b5, type: 3}
   smoke: {fileID: 1971631438}
   trainCarPrefab: {fileID: 7494284725195535657, guid: 009c9b7eb3fefdc4992533292fc6db35, type: 3}
 --- !u!61 &1208653454
