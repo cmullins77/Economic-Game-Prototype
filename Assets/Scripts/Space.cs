@@ -18,7 +18,7 @@ public class Space : MonoBehaviour
     void Update()
     {
         if (FindObjectOfType<Train>().isMoving) {
-            transform.Translate(0.005f, 0f, 0f);
+            transform.Translate(0.05f, 0f, 0f);
             if (transform.position.x > 15) {
                 Destroy(gameObject);
             }
